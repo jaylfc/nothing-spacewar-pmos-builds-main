@@ -38,7 +38,7 @@ jobs:
           # 2026-06-12 is the last date this workflow built successfully.
           git clone https://gitlab.postmarketos.org/postmarketOS/pmbootstrap.git
           cd pmbootstrap
-          git checkout "$(git rev-list -1 --before=2026-06-12 master)"
+          git checkout "$(git rev-list -1 --before=2026-06-12 HEAD)"
           cd ..
           mkdir -p ~/.local/bin
           ln -s "$PWD/pmbootstrap/pmbootstrap.py" ~/.local/bin/pmbootstrap
