@@ -30,7 +30,16 @@ jobs:
 
       - name: Install pmbootstrap from git
         run: |
-          git clone https://gitlab.postmarketos.org/postmarketOS/pmbootstrap.git --depth 1
+          # Pin pmbootstrap to the era of the pinned pmaports branch.
+          # HEAD pmbootstrap requires deviceinfo_schema.toml, which the
+          # device branch (mainlining danila/spacewar-mr) does not carry, so
+          # an unpinned clone fails at "PREPARE INSTALL BLOCKDEVICE" with
+          # "pmaports checkout does not contain a 'deviceinfo_schema.toml'".
+          # 2026-06-12 is the last date this workflow built successfully.
+          git clone https://gitlab.postmarketos.org/postmarketOS/pmbootstrap.git
+          cd pmbootstrap
+          git checkout "$(git rev-list -1 --before=2026-06-12 master)"
+          cd ..
           mkdir -p ~/.local/bin
           ln -s "$PWD/pmbootstrap/pmbootstrap.py" ~/.local/bin/pmbootstrap
           pmbootstrap --version
